@@ -230,7 +230,13 @@
                         <children>
                           <component id="96729" class="javax.swing.JTable" binding="slot1Table">
                             <constraints/>
-                            <properties/>
+                            <properties>
+                              <autoResizeMode value="4"/>
+                              <fillsViewportHeight value="false"/>
+                            </properties>
+                            <clientProperties>
+                              <terminateEditOnFocusLost class="java.lang.Boolean" value="false"/>
+                            </clientProperties>
                           </component>
                         </children>
                       </scrollpane>
@@ -243,7 +249,9 @@
                         <children>
                           <component id="f07c2" class="javax.swing.JTable" binding="slot2Table">
                             <constraints/>
-                            <properties/>
+                            <properties>
+                              <autoResizeMode value="4"/>
+                            </properties>
                           </component>
                         </children>
                       </scrollpane>
@@ -256,7 +264,9 @@
                         <children>
                           <component id="dff95" class="javax.swing.JTable" binding="slot3Table">
                             <constraints/>
-                            <properties/>
+                            <properties>
+                              <autoResizeMode value="4"/>
+                            </properties>
                           </component>
                         </children>
                       </scrollpane>
@@ -311,7 +321,9 @@
                         <children>
                           <component id="32d4d" class="javax.swing.JTable" binding="allSlotTable">
                             <constraints/>
-                            <properties/>
+                            <properties>
+                              <autoResizeMode value="4"/>
+                            </properties>
                           </component>
                         </children>
                       </scrollpane>
@@ -322,13 +334,13 @@
                         <properties/>
                         <border type="none"/>
                         <children>
-                          <component id="59d5c" class="javax.swing.JButton">
+                          <component id="59d5c" class="javax.swing.JButton" binding="sortTable">
                             <constraints/>
                             <properties>
                               <maximumSize width="80" height="25"/>
                               <minimumSize width="80" height="25"/>
                               <preferredSize width="80" height="25"/>
-                              <text value="Graf"/>
+                              <text value="Sortuj"/>
                             </properties>
                           </component>
                         </children>

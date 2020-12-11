@@ -21,6 +21,7 @@ public class GUI extends JFrame {
     private JComboBox<String> matrixType;
     private JButton graph;
     private JTable allSlotTable;
+    private JButton sortTable;
     private Matrix matrix;
     private int matrixSize;
     private int counter = 0;
@@ -30,6 +31,7 @@ public class GUI extends JFrame {
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         this.setContentPane(mainPanel);
         this.setSize(1280,600);
+        this.setLocationRelativeTo(null);
         this.setResizable(false);
         timeMatrixTable.setModel(new DefaultTableModel(
                 null,
@@ -85,66 +87,80 @@ public class GUI extends JFrame {
 
             AuxiliaryTable auxTable = new AuxiliaryTable(matrixSize);
             slot1Table.setModel(new DefaultTableModel(
-                    new Object [auxTable.getS1Number()][7],
-                    new String [] {"Nr.","W1","W2","W3","Ia3", "Ia2","Ia1"}
+                    new Object [auxTable.getS1Number()][8],
+                    new String [] {"Nr.","W1","W2","W3","Op.","Ia3", "Ia2","Ia1"}
             ));
             for(int i = 0; i < auxTable.getS1Number(); i++ ) {
                 slot1Table.setValueAt(auxTable.getS1Numbers().get(i), i, 0);
                 slot1Table.setValueAt(auxTable.getS1w1().get(i), i, 1);
                 slot1Table.setValueAt(auxTable.getS1w2().get(i), i, 2);
                 slot1Table.setValueAt(auxTable.getS1w3().get(i), i, 3);
-                slot1Table.setValueAt(Arrays.toString(auxTable.getS1ia3().get(i)), i, 4);
-                slot1Table.setValueAt(Arrays.toString(auxTable.getS1ia2().get(i)), i, 5);
-                slot1Table.setValueAt(Arrays.toString(auxTable.getS1ia1().get(i)), i, 6);
+                slot1Table.setValueAt("sqrt", i, 4);
+                slot1Table.setValueAt(Arrays.toString(auxTable.getS1ia3().get(i)), i, 5);
+                slot1Table.setValueAt(Arrays.toString(auxTable.getS1ia2().get(i)), i, 6);
+                slot1Table.setValueAt(Arrays.toString(auxTable.getS1ia1().get(i)), i, 7);
             }
 
             slot2Table.setModel(new DefaultTableModel(
-                    new Object [auxTable.getS2Number()][7],
-                    new String [] {"Nr.","W1","W2","W3","Ia3","Ia2", "Ia1"}
+                    new Object [auxTable.getS2Number()][8],
+                    new String [] {"Nr.","W1","W2","W3","Op.","Ia3","Ia2", "Ia1"}
             ));
             for(int i = 0; i < auxTable.getS2Number(); i++ ) {
                 slot2Table.setValueAt(auxTable.getS2Numbers().get(i), i, 0);
                 slot2Table.setValueAt(auxTable.getS2w1().get(i), i, 1);
                 slot2Table.setValueAt(auxTable.getS2w2().get(i), i, 2);
                 slot2Table.setValueAt(auxTable.getS2w3().get(i), i, 3);
-                slot2Table.setValueAt(Arrays.toString(auxTable.getS2ia3().get(i)), i, 4);
-                slot2Table.setValueAt(Arrays.toString(auxTable.getS2ia2().get(i)), i, 5);
-                slot2Table.setValueAt(Arrays.toString(auxTable.getS2ia1().get(i)), i, 6);
+                slot2Table.setValueAt("/", i, 4);
+                slot2Table.setValueAt(Arrays.toString(auxTable.getS2ia3().get(i)), i, 5);
+                slot2Table.setValueAt(Arrays.toString(auxTable.getS2ia2().get(i)), i, 6);
+                slot2Table.setValueAt(Arrays.toString(auxTable.getS2ia1().get(i)), i, 7);
             }
 
             slot3Table.setModel(new DefaultTableModel(
-                    new Object [auxTable.getS3Number()][7],
-                    new String [] {"Nr.","W1","W2","W3","Ia3","Ia2", "Ia1"}
+                    new Object [auxTable.getS3Number()][8],
+                    new String [] {"Nr.","W1","W2","W3","Op","Ia3","Ia2", "Ia1"}
             ));
             for(int i = 0; i < auxTable.getS3Number(); i++ ) {
                 slot3Table.setValueAt(auxTable.getS3Numbers().get(i), i, 0);
                 slot3Table.setValueAt(auxTable.getS3w1().get(i), i, 1);
                 slot3Table.setValueAt(auxTable.getS3w2().get(i), i, 2);
                 slot3Table.setValueAt(auxTable.getS3w3().get(i), i, 3);
-                slot3Table.setValueAt(Arrays.toString(auxTable.getS3ia3().get(i)), i, 4);
-                slot3Table.setValueAt(Arrays.toString(auxTable.getS3ia2().get(i)), i, 5);
-                slot3Table.setValueAt(Arrays.toString(auxTable.getS3ia1().get(i)), i, 6);
+                slot3Table.setValueAt("-*", i, 4);
+                slot3Table.setValueAt(Arrays.toString(auxTable.getS3ia3().get(i)), i, 5);
+                slot3Table.setValueAt(Arrays.toString(auxTable.getS3ia2().get(i)), i, 6);
+                slot3Table.setValueAt(Arrays.toString(auxTable.getS3ia1().get(i)), i, 7);
 
             }
 
             int bigtable = auxTable.getS1Number()+ auxTable.getS2Number()+ auxTable.getS3Number();
             allSlotTable.setModel(new DefaultTableModel(
-                    new Object [bigtable][7],
-                    new String [] {"Nr.","W1","W2","W3","Ia3", "Ia2","Ia1"}
+                    new Object [bigtable][8],
+                    new String [] {"Nr.","W1","W2","W3","Op","Ia3", "Ia2","Ia1"}
             ));
 
             for(int i = 0; i < bigtable; i++ ) {
-                for(int j = 0; j < 7; j++) {
+                for(int j = 0; j < 8; j++) {
                     if (i < auxTable.getS1Number()) {
                         allSlotTable.setValueAt(slot1Table.getValueAt(i, j), i, j);
                     } if (i >= auxTable.getS1Number() && i < auxTable.getS2Number() + auxTable.getS1Number()) {
                         allSlotTable.setValueAt(slot2Table.getValueAt(i-auxTable.getS1Number(), j), i, j);
                     } if (i >= auxTable.getS1Number()+ auxTable.getS2Number()) {
-                        allSlotTable.setValueAt(slot3Table.getValueAt(i-auxTable.getS3Number(), j), i , j);
+                        allSlotTable.setValueAt(slot3Table.getValueAt(i-(auxTable.getS1Number()+auxTable.getS2Number()), j), i , j);
                     }
                 }
             }
+        });
 
+
+        graph.addActionListener(e -> {
+        JFrame pictureFrame = new JFrame("Graf zależności informacyjnej");
+        pictureFrame.add(new JLabel(new ImageIcon("CholeskyGraph.png")));
+        pictureFrame.pack();
+        pictureFrame.setVisible(true);
+        });
+
+
+        sortTable.addActionListener(e -> {
             TableRowSorter<TableModel> sorter = new TableRowSorter<>(allSlotTable.getModel());
             allSlotTable.setRowSorter(sorter);
             List<RowSorter.SortKey> sortKeys = new ArrayList<>();
@@ -157,20 +173,17 @@ public class GUI extends JFrame {
             sorter.setSortKeys(sortKeys);
             sorter.sort();
             allSlotTable.getTableHeader().setEnabled(false);
-
-        });
-
-
-        graph.addActionListener(e -> {
-        JFrame pictureFrame = new JFrame();
-        pictureFrame.add(new JLabel(new ImageIcon("CholeskyGraph.png")));
-        pictureFrame.pack();
-        pictureFrame.setVisible(true);
+            int bigtable = allSlotTable.getRowCount();
+            for(int i = 0; i < bigtable; i++ ) {
+                allSlotTable.setValueAt(i+1,i,0);
+                allSlotTable.convertRowIndexToModel(i);
+            }
         });
     }
 
     public static void main(String[] args) {
         JFrame frame = new GUI("Cholesky Project");
+        frame.setResizable(false);
         frame.setVisible(true);
     }
 
