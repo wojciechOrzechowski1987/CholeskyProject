@@ -1,6 +1,10 @@
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class GUI extends JFrame {
     private JPanel mainPanel;
@@ -16,6 +20,7 @@ public class GUI extends JFrame {
     private JTable slot1Table;
     private JComboBox<String> matrixType;
     private JButton graph;
+    private JTable allSlotTable;
     private Matrix matrix;
     private int matrixSize;
     private int counter = 0;
@@ -80,47 +85,80 @@ public class GUI extends JFrame {
 
             AuxiliaryTable auxTable = new AuxiliaryTable(matrixSize);
             slot1Table.setModel(new DefaultTableModel(
-                    new Object [auxTable.getS1Number()][5],
-                    new String [] {"Nr.","W1","W2","W3","ia1"}
+                    new Object [auxTable.getS1Number()][7],
+                    new String [] {"Nr.","W1","W2","W3","Ia3", "Ia2","Ia1"}
             ));
             for(int i = 0; i < auxTable.getS1Number(); i++ ) {
                 slot1Table.setValueAt(auxTable.getS1Numbers().get(i), i, 0);
                 slot1Table.setValueAt(auxTable.getS1w1().get(i), i, 1);
                 slot1Table.setValueAt(auxTable.getS1w2().get(i), i, 2);
                 slot1Table.setValueAt(auxTable.getS1w3().get(i), i, 3);
-                slot1Table.setValueAt(Arrays.toString(auxTable.getS1ia1().get(i)), i, 4);
+                slot1Table.setValueAt(Arrays.toString(auxTable.getS1ia3().get(i)), i, 4);
+                slot1Table.setValueAt(Arrays.toString(auxTable.getS1ia2().get(i)), i, 5);
+                slot1Table.setValueAt(Arrays.toString(auxTable.getS1ia1().get(i)), i, 6);
             }
 
             slot2Table.setModel(new DefaultTableModel(
-                    new Object [auxTable.getS2Number()][6],
-                    new String [] {"Nr.","W1","W2","W3","ia2", "ia1"}
+                    new Object [auxTable.getS2Number()][7],
+                    new String [] {"Nr.","W1","W2","W3","Ia3","Ia2", "Ia1"}
             ));
             for(int i = 0; i < auxTable.getS2Number(); i++ ) {
                 slot2Table.setValueAt(auxTable.getS2Numbers().get(i), i, 0);
                 slot2Table.setValueAt(auxTable.getS2w1().get(i), i, 1);
                 slot2Table.setValueAt(auxTable.getS2w2().get(i), i, 2);
                 slot2Table.setValueAt(auxTable.getS2w3().get(i), i, 3);
-                slot2Table.setValueAt(Arrays.toString(auxTable.getS2ia2().get(i)), i, 4);
-                slot2Table.setValueAt(Arrays.toString(auxTable.getS2ia1().get(i)), i, 5);
-
+                slot2Table.setValueAt(Arrays.toString(auxTable.getS2ia3().get(i)), i, 4);
+                slot2Table.setValueAt(Arrays.toString(auxTable.getS2ia2().get(i)), i, 5);
+                slot2Table.setValueAt(Arrays.toString(auxTable.getS2ia1().get(i)), i, 6);
             }
 
             slot3Table.setModel(new DefaultTableModel(
                     new Object [auxTable.getS3Number()][7],
-                    new String [] {"Nr.","W1","W2","W3","im","ia2", "ia1"}
+                    new String [] {"Nr.","W1","W2","W3","Ia3","Ia2", "Ia1"}
             ));
             for(int i = 0; i < auxTable.getS3Number(); i++ ) {
                 slot3Table.setValueAt(auxTable.getS3Numbers().get(i), i, 0);
                 slot3Table.setValueAt(auxTable.getS3w1().get(i), i, 1);
                 slot3Table.setValueAt(auxTable.getS3w2().get(i), i, 2);
                 slot3Table.setValueAt(auxTable.getS3w3().get(i), i, 3);
-                slot3Table.setValueAt(Arrays.toString(auxTable.getS3im().get(i)), i, 4);
+                slot3Table.setValueAt(Arrays.toString(auxTable.getS3ia3().get(i)), i, 4);
                 slot3Table.setValueAt(Arrays.toString(auxTable.getS3ia2().get(i)), i, 5);
                 slot3Table.setValueAt(Arrays.toString(auxTable.getS3ia1().get(i)), i, 6);
 
             }
 
+            int bigtable = auxTable.getS1Number()+ auxTable.getS2Number()+ auxTable.getS3Number();
+            allSlotTable.setModel(new DefaultTableModel(
+                    new Object [bigtable][7],
+                    new String [] {"Nr.","W1","W2","W3","Ia3", "Ia2","Ia1"}
+            ));
 
+            for(int i = 0; i < bigtable; i++ ) {
+                for(int j = 0; j < 7; j++) {
+                    if (i < auxTable.getS1Number()) {
+                        allSlotTable.setValueAt(slot1Table.getValueAt(i, j), i, j);
+                    } if (i >= auxTable.getS1Number() && i < auxTable.getS2Number() + auxTable.getS1Number()) {
+                        allSlotTable.setValueAt(slot2Table.getValueAt(i-auxTable.getS1Number(), j), i, j);
+                    } if (i >= auxTable.getS1Number()+ auxTable.getS2Number()) {
+                        allSlotTable.setValueAt(slot3Table.getValueAt(i-auxTable.getS3Number(), j), i , j);
+                    }
+                }
+            }
+
+
+
+            TableRowSorter<TableModel> sorter = new TableRowSorter<>(allSlotTable.getModel());
+            allSlotTable.setRowSorter(sorter);
+            List<RowSorter.SortKey> sortKeys = new ArrayList<>();
+            int w1 = 1;
+            sortKeys.add(new RowSorter.SortKey(w1, SortOrder.ASCENDING));
+            int w2 = 2;
+            sortKeys.add(new RowSorter.SortKey(w2, SortOrder.ASCENDING));
+            int w3 = 3;
+            sortKeys.add(new RowSorter.SortKey(w3, SortOrder.ASCENDING));
+            sorter.setSortKeys(sortKeys);
+            sorter.sort();
+            allSlotTable.getTableHeader().setEnabled(false);
 
         });
 

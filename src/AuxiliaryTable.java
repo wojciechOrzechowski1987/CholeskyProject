@@ -8,8 +8,8 @@ public class AuxiliaryTable {
     private final ArrayList<Integer> s1w2 = new ArrayList<>();
     private final ArrayList<Integer> s1w3 = new ArrayList<>();
     private final ArrayList<Integer[]> s1ia1 = new ArrayList<>();
-    //private ArrayList<Integer[]> s1ia2 = new ArrayList<>();
-    //private ArrayList<Integer[]> s1im = new ArrayList<>();
+    private final ArrayList<Integer[]> s1ia2 = new ArrayList<>();
+    private final ArrayList<Integer[]> s1ia3 = new ArrayList<>();
 
     private final ArrayList<Integer> s2Numbers = new ArrayList<>();
     private final ArrayList<Integer> s2w1 = new ArrayList<>();
@@ -17,7 +17,7 @@ public class AuxiliaryTable {
     private final ArrayList<Integer> s2w3 = new ArrayList<>();
     private final ArrayList<Integer[]> s2ia1 = new ArrayList<>();
     private final ArrayList<Integer[]> s2ia2 = new ArrayList<>();
-    //private ArrayList<Integer[]> s2im = new ArrayList<>();
+    private final ArrayList<Integer[]> s2ia3 = new ArrayList<>();
 
     private final ArrayList<Integer> s3Numbers = new ArrayList<>();
     private final ArrayList<Integer> s3w1 = new ArrayList<>();
@@ -25,7 +25,7 @@ public class AuxiliaryTable {
     private final ArrayList<Integer> s3w3 = new ArrayList<>();
     private final ArrayList<Integer[]> s3ia1 = new ArrayList<>();
     private final ArrayList<Integer[]> s3ia2 = new ArrayList<>();
-    private final ArrayList<Integer[]> s3im = new ArrayList<>();
+    private final ArrayList<Integer[]> s3ia3 = new ArrayList<>();
 
     public AuxiliaryTable(int n) {
         slot1(n);
@@ -36,25 +36,34 @@ public class AuxiliaryTable {
     
     private void slot1(int n) {
         for (int i1 = 0; i1 < n; i1++) {
-                s1Number += 1;
-                s1Numbers.add(s1Number);
-                s1w1.add(i1+1);
-                s1w2.add(i1+1);
-                s1w3.add(i1+1);
-                s1ia1.add(new Integer[]{i1+1,i1+1});
+            for (int i2 = i1; i2 <= i1; i2++) {
+                for (int i3 = i1; i3 <= i1; i3++) {
+                    s1Number += 1;
+                    s1Numbers.add(s1Number);
+                    s1w1.add(i1 + 1);
+                    s1w2.add(i2 + 1);
+                    s1w3.add(i3 + 1);
+                    s1ia1.add(new Integer[]{i1 + 1, i1 + 1});
+                    s1ia2.add(null);
+                    s1ia3.add(null);
                 }
+            }
+        }
     }
 
     private void slot2(int n) {
         for (int i1 = 0; i1 < n; i1++) {
-            for (int i2= i1+1; i2 < n; i2++) {
+            for (int i2 = i1 + 1; i2 < n; i2++) {
+                for (int i3 = i2; i3 <= i2; i3++) {
                     s2Number += 1;
                     s2Numbers.add(s2Number);
-                    s2w1.add(i1+1);
-                    s2w2.add(i2+1);
-                    s2w3.add(i1+1);
-                    s2ia1.add(new Integer[]{i2+1,i1+1});
-                    s2ia2.add(new Integer[]{i1+1,i1+1});
+                    s2w1.add(i1 + 1);
+                    s2w2.add(i2 + 1);
+                    s2w3.add(i1 + 1);
+                    s2ia1.add(new Integer[]{i2 + 1, i1 + 1});
+                    s2ia2.add(new Integer[]{i1 + 1, i1 + 1});
+                    s2ia3.add(null);
+                }
             }
         }
     }
@@ -69,8 +78,8 @@ public class AuxiliaryTable {
                     s3w2.add(i2+1);
                     s3w3.add(i3+1);
                     s3ia1.add(new Integer[]{i2+1,i3+1});
-                    s3ia2.add(new Integer[]{i3+1,i1+1});
-                    s3im.add(new Integer[]{i2+1,i1+1});
+                    s3ia2.add(new Integer[]{i2+1,i1+1});
+                    s3ia3.add(new Integer[]{i3+1,i1+1});
                 }
             }
         }
@@ -139,6 +148,14 @@ public class AuxiliaryTable {
         return s1ia1;
     }
 
+    public ArrayList<Integer[]> getS1ia2() {
+        return s1ia2;
+    }
+
+    public ArrayList<Integer[]> getS1ia3() {
+        return s1ia3;
+    }
+
     public ArrayList<Integer> getS2Numbers() {
         return s2Numbers;
     }
@@ -161,6 +178,10 @@ public class AuxiliaryTable {
 
     public ArrayList<Integer[]> getS2ia2() {
         return s2ia2;
+    }
+
+    public ArrayList<Integer[]> getS2ia3() {
+        return s2ia3;
     }
 
     public ArrayList<Integer> getS3Numbers() {
@@ -187,7 +208,7 @@ public class AuxiliaryTable {
         return s3ia2;
     }
 
-    public ArrayList<Integer[]> getS3im() {
-        return s3im;
+    public ArrayList<Integer[]> getS3ia3() {
+        return s3ia3;
     }
 }
