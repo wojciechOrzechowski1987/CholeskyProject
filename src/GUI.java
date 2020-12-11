@@ -145,8 +145,6 @@ public class GUI extends JFrame {
                 }
             }
 
-
-
             TableRowSorter<TableModel> sorter = new TableRowSorter<>(allSlotTable.getModel());
             allSlotTable.setRowSorter(sorter);
             List<RowSorter.SortKey> sortKeys = new ArrayList<>();
