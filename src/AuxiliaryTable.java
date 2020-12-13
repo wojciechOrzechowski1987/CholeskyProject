@@ -2,6 +2,8 @@ import java.util.ArrayList;
 
 public class AuxiliaryTable {
 
+    private final ApexList s1ApexList = new ApexList();
+
     private int s1Number= 0, s2Number =0, s3Number = 0;
     private final ArrayList<Integer> s1Numbers = new ArrayList<>();
     private final ArrayList<Integer> s1w1 = new ArrayList<>();
@@ -40,12 +42,9 @@ public class AuxiliaryTable {
                 for (int i3 = i1; i3 <= i1; i3++) {
                     s1Number += 1;
                     s1Numbers.add(s1Number);
-                    s1w1.add(i1 + 1);
-                    s1w2.add(i2 + 1);
-                    s1w3.add(i3 + 1);
-                    s1ia1.add(new Integer[]{i1 + 1, i1 + 1});
-                    s1ia2.add(null);
-                    s1ia3.add(null);
+                    Apex apex = new Apex((i1+1),(i2+1),(i3+1));
+                    apex.setIa(apex.getX(), apex.getX());
+                    s1ApexList.getApexList().add(apex);
                 }
             }
         }
@@ -210,5 +209,9 @@ public class AuxiliaryTable {
 
     public ArrayList<Integer[]> getS3ia3() {
         return s3ia3;
+    }
+
+    public ApexList getS1ApexList() {
+        return s1ApexList;
     }
 }

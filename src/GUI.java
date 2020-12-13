@@ -92,13 +92,13 @@ public class GUI extends JFrame {
             ));
             for(int i = 0; i < auxTable.getS1Number(); i++ ) {
                 slot1Table.setValueAt(auxTable.getS1Numbers().get(i), i, 0);
-                slot1Table.setValueAt(auxTable.getS1w1().get(i), i, 1);
-                slot1Table.setValueAt(auxTable.getS1w2().get(i), i, 2);
-                slot1Table.setValueAt(auxTable.getS1w3().get(i), i, 3);
+                slot1Table.setValueAt(auxTable.getS1ApexList().getApexList().get(i).getX(), i, 1);
+                slot1Table.setValueAt(auxTable.getS1ApexList().getApexList().get(i).getY(), i, 2);
+                slot1Table.setValueAt(auxTable.getS1ApexList().getApexList().get(i).getZ(), i, 3);
                 slot1Table.setValueAt("sqrt", i, 4);
-                slot1Table.setValueAt(Arrays.toString(auxTable.getS1ia3().get(i)), i, 5);
-                slot1Table.setValueAt(Arrays.toString(auxTable.getS1ia2().get(i)), i, 6);
-                slot1Table.setValueAt(Arrays.toString(auxTable.getS1ia1().get(i)), i, 7);
+                slot1Table.setValueAt(Arrays.toString(auxTable.getS1ApexList().getApexList().get(i).getIa3()), i, 5);
+                slot1Table.setValueAt(Arrays.toString(auxTable.getS1ApexList().getApexList().get(i).getIa2()), i, 6);
+                slot1Table.setValueAt(Arrays.toString(auxTable.getS1ApexList().getApexList().get(i).getIa()), i, 7);
             }
 
             slot2Table.setModel(new DefaultTableModel(
