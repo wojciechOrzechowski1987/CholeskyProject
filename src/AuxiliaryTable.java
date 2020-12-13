@@ -3,6 +3,10 @@ import java.util.ArrayList;
 public class AuxiliaryTable {
 
     private final ApexList s1ApexList = new ApexList();
+    private final ApexList s2ApexList = new ApexList();
+    private final ApexList s3ApexList = new ApexList();
+
+    private final ApexList fullApexList = new ApexList();
 
     private int s1Number= 0, s2Number =0, s3Number = 0;
     private final ArrayList<Integer> s1Numbers = new ArrayList<>();
@@ -34,6 +38,16 @@ public class AuxiliaryTable {
         slot2(n);
         slot3(n);
         //slotTest(n);
+    }
+
+    public void mergeApexLists(){
+        fullApexList.addApexList(s1ApexList);
+        fullApexList.addApexList(s2ApexList);
+        fullApexList.addApexList(s3ApexList);
+    }
+
+    public void setConnections() {
+        fullApexList.setConnections();
     }
     
     private void slot1(int n) {
@@ -213,5 +227,17 @@ public class AuxiliaryTable {
 
     public ApexList getS1ApexList() {
         return s1ApexList;
+    }
+
+    public ApexList getS2ApexList() {
+        return s2ApexList;
+    }
+
+    public ApexList getS3ApexList() {
+        return s3ApexList;
+    }
+
+    public ApexList getFullApexList() {
+        return fullApexList;
     }
 }

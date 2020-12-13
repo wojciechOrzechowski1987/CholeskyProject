@@ -16,7 +16,6 @@ public class ApexList {
         this.apexList = apexList;
     }
 
-
     public void setConnections(){
         for (Apex apex: apexList) {
             for (Apex apexIa: apexList) {
@@ -68,6 +67,12 @@ public class ApexList {
                     }
                 }
             }
+        }
+    }
+
+    public void addApexList(ApexList apexList) {
+        for(Apex apex : apexList.getApexList()) {
+            this.apexList.add(apex);
         }
     }
 
