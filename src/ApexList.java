@@ -34,6 +34,7 @@ public class ApexList {
                             apex.addConnection(apexIa);
                             apexIa.setIa3Null();
                         }
+                        apex.setIaNull();
                     }
                     if(apex.getIa2()!=null){
                         if(apex.getIa2() == apexIa.getIa()) {
@@ -48,6 +49,7 @@ public class ApexList {
                             apex.addConnection(apexIa);
                             apexIa.setIa3Null();
                         }
+                        apex.setIa2Null();
                     }
                     if(apex.getIa3()!=null){
                         if(apex.getIa3() == apexIa.getIa()) {
@@ -62,6 +64,7 @@ public class ApexList {
                             apex.addConnection(apexIa);
                             apexIa.setIa3Null();
                         }
+                        apex.setIa3Null();
                     }
                 }
             }
