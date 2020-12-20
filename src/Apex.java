@@ -26,16 +26,8 @@ public class Apex {
         return x;
     }
 
-    public void setX(int x) {
-        this.x = x;
-    }
-
     public int getY() {
         return y;
-    }
-
-    public void setY(int y) {
-        this.y = y;
     }
 
     public int getZ() {
@@ -71,7 +63,7 @@ public class Apex {
     }
 
     public void setIa2(int i1, int i2) {
-        this.ia = new Integer[]{i1, i2};
+        this.ia2 = new Integer[]{i1, i2};
     }
 
     public void setIa2Null(){
@@ -83,7 +75,7 @@ public class Apex {
     }
 
     public void setIa3(int i1, int i2) {
-        this.ia = new Integer[]{i1, i2};
+        this.ia3 = new Integer[]{i1, i2};
     }
 
     public void setIa3Null(){

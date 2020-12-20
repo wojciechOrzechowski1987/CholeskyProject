@@ -38,7 +38,7 @@
                 <properties/>
                 <border type="none"/>
                 <children>
-                  <component id="2ff52" class="javax.swing.JTextField" binding="matrixSizeTextFied">
+                  <component id="2ff52" class="javax.swing.JTextField" binding="matrixSizeTextField">
                     <constraints>
                       <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false">
                         <minimum-size width="50" height="-1"/>
@@ -59,7 +59,7 @@
                       <text value="Generuj"/>
                     </properties>
                   </component>
-                  <component id="c8413" class="javax.swing.JButton" binding="genereteCholeskyButton">
+                  <component id="c8413" class="javax.swing.JButton" binding="generateCholeskyButton">
                     <constraints>
                       <grid row="0" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                     </constraints>

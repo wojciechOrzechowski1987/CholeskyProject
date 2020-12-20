@@ -3,87 +3,21 @@ public class Matrix {
     private final int row;
     private final int column;
     private final double[][] matrixData;
+    private int matrixSize;
     private long start;
     private long stop;
-
-    public void setStart(long start) {
-        this.start = start;
-    }
-
-    public void setStop(long stop) {
-        this.stop = stop;
-    }
-
-    public long getStart() {
-        return start;
-    }
-
-    public long getStop() {
-        return stop;
-    }
-
-    /*public void setMatrixData(double[][] matrixData) {
-        this.matrixData = matrixData;
-    }*/
-
-    /*public int getRow() {
-        return row;
-    }*/
-
-    /*public void setRow(int row) {
-        this.row = row;
-    }*/
-
-    /*public int getColumn() {
-        return column;
-    }*/
-
-   /* public void setColumn(int column) {
-        this.column = column;
-    }*/
 
     public Matrix(int n, int m) {
         this.row = n;
         this.column = m;
+        this.matrixSize = n;
         this.matrixData = new double[n][m];
     }
-
-  /*  public Matrix(int n, int m, double[][] data) {
-        this.row = n;
-        this.column = m;
-        this.matrixData = data;
-    }*/
-
-    public double[][] getMatrixData() {
-        return matrixData;
-    }
-
-/*    public Matrix(int n){ //n - max 29 - przy 30 się nanuje ;)
-        this.row = n;
-        this.column = n;
-        this.matrixData = new double[n][n];
-
-
-        for (int i = 0; i < n; i ++) {
-            this.matrixData[0][i] = 1;
-            this.matrixData[i][0] = 1;
-
-        }
-
-        for (int i = 1; i < n; i ++){
-            for (int j = 1; j < n; j ++){
-                this.matrixData[i][j] = this.matrixData[i-1][j] + this.matrixData[i][j-1];
-            }
-        }
-    }*/
-
-    /*public Matrix(Matrix matrix) {
-        this(matrix.getRow(), matrix.getColumn(), matrix.getMatrixData());
-    }*/
 
     public Matrix (int n, boolean x) {
         this.row = n;
         this.column = n;
+        this.matrixSize = n;
         this.matrixData = new double[n][n];
         if (x){
         for (int i = 0; i < n; i ++){
@@ -106,26 +40,6 @@ public class Matrix {
             }
         }
     }
-
-   /* public Matrix(double[][] matrix) {
-        this.row = matrix.length;
-        this.column = matrix[0].length;
-        this.matrixData = new double[this.row][this.column];
-        for (int i = 0; i < this.row; i++) {
-            System.arraycopy(matrix[i], 0, this.matrixData[i], 0, this.column);
-        }
-    }*/
-
-   /* public Matrix add(Matrix B) {
-        Matrix A = this;
-        Matrix C = new Matrix(A.column, B.row);
-        for (int i = 0; i < C.column; i++) {
-            for (int j = 0; j < C.row; j++) {
-                C.matrixData[i][j] = (A.matrixData[i][j] + B.matrixData[i][j]);
-            }
-        }
-        return C;
-    }*/
 
     public Matrix sub(Matrix B) {
         Matrix A = this;
@@ -162,27 +76,7 @@ public class Matrix {
         return A;
     }
 
-/*    public Matrix cholesky() {
-        Matrix A = new Matrix(this.row, this.column);
-        for (int i = 0; i < this.row; i++) {
-            for (int j = 0; j <= i; j++) {
-                double sum = 0;
-                if (j == i) {
-                    for (int k = 0; k < j; k++)
-                        sum += Math.pow(A.matrixData[j][k], 2);
-                    A.matrixData[j][j] = Math.sqrt(this.matrixData[j][j] - sum);
-                } else {
-                    for (int k = 0; k < j; k++) {
-                        sum += (A.matrixData[i][k] * A.matrixData[j][k]);
-                    }
-                    A.matrixData[i][j] = (this.matrixData[i][j] - sum) / A.matrixData[j][j];
-                }
-            }
-        }
-        return A;
-    }*/
-
-    public Matrix cholesky2() {
+    public Matrix cholesky() {
         Matrix A = new Matrix(this.row, this.column);
         for (int i = 0; i < this.row; i++) {
             System.arraycopy(this.matrixData[i], 0, A.matrixData[i], 0, this.row);
@@ -214,12 +108,36 @@ public class Matrix {
         return L;
     }
 
-   /* public void print() {
+    public void setStart(long start) {
+        this.start = start;
+    }
+
+    public void setStop(long stop) {
+        this.stop = stop;
+    }
+
+    public long getStart() {
+        return start;
+    }
+
+    public long getStop() {
+        return stop;
+    }
+
+    public int getMatrixSize() {
+        return matrixSize;
+    }
+
+    public double[][] getMatrixData() {
+        return matrixData;
+    }
+
+    public void printMatrix() {
         for (int i = 0; i < this.row; i++) {
             for (int j = 0; j < this.column; j++)
                 System.out.print(this.matrixData[i][j] +" ");
-            System.out.println();
-        }
-    }*/
+                System.out.println();
+            }
+    }
 
 }
