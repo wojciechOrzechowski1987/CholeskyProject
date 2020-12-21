@@ -3,21 +3,18 @@ public class Matrix {
     private final int row;
     private final int column;
     private final double[][] matrixData;
-    private int matrixSize;
     private long start;
     private long stop;
 
     public Matrix(int n, int m) {
         this.row = n;
         this.column = m;
-        this.matrixSize = n;
         this.matrixData = new double[n][m];
     }
 
     public Matrix (int n, boolean x) {
         this.row = n;
         this.column = n;
-        this.matrixSize = n;
         this.matrixData = new double[n][n];
         if (x){
         for (int i = 0; i < n; i ++){
@@ -124,20 +121,8 @@ public class Matrix {
         return stop;
     }
 
-    public int getMatrixSize() {
-        return matrixSize;
-    }
-
     public double[][] getMatrixData() {
         return matrixData;
-    }
-
-    public void printMatrix() {
-        for (int i = 0; i < this.row; i++) {
-            for (int j = 0; j < this.column; j++)
-                System.out.print(this.matrixData[i][j] +" ");
-                System.out.println();
-            }
     }
 
 }

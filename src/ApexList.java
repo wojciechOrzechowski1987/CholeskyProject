@@ -1,8 +1,9 @@
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class ApexList {
 
-    private ArrayList<Apex> apexList;
+    private final ArrayList<Apex> apexList;
 
     public ApexList() {
         apexList = new ArrayList<>();
@@ -12,68 +13,235 @@ public class ApexList {
         return apexList;
     }
 
-    public void setApexList(ArrayList<Apex> apexList) {
-        this.apexList = apexList;
-    }
-
-    public void setConnections(){
+   /* public void setConnections(){
         for (Apex apex: apexList) {
-            for (Apex apexIa: apexList) {
-                if(apex!=apexIa){
-                    if(apex.getIa()!=null){
-                        if(apex.getIa() == apexIa.getIa()) {
-                            apex.addConnection(apexIa);
-                            apexIa.setIaNull();
+            for (Apex apex2: apexList) {
+                if(apex!=apex2 && (apex2.getIa()!=null || apex2.getIa2()!=null || apex2.getIa3()!=null)) {
+                    if(apex.getIa3()!=null){
+                        if(Arrays.equals(apex.getIa3(), apex2.getIa3())) {
+                            apex.addConnection(apex2);
+                            apex.setIa3Null();
+                        } else if(Arrays.equals(apex.getIa3(), apex2.getIa2())) {
+                            apex.addConnection(apex2);
+                            apex.setIa3Null();
+                        } else if(Arrays.equals(apex.getIa3(), apex2.getIa())) {
+                            apex.addConnection(apex2);
+                            apex.setIa3Null();
                         }
-                        if(apex.getIa() == apexIa.getIa2()) {
-                            apex.addConnection(apexIa);
-                            apexIa.setIa2Null();
-                        }
-                        if(apex.getIa() == apexIa.getIa3()) {
-                            apex.addConnection(apexIa);
-                            apexIa.setIa3Null();
-                        }
-                        apex.setIaNull();
                     }
                     if(apex.getIa2()!=null){
-                        if(apex.getIa2() == apexIa.getIa()) {
-                            apex.addConnection(apexIa);
-                            apexIa.setIaNull();
+                        if(Arrays.equals(apex.getIa2(), apex2.getIa3())) {
+                            apex.addConnection(apex2);
+                            apex.setIa2Null();
+                        } else if(Arrays.equals(apex.getIa2(), apex2.getIa2())) {
+                            apex.addConnection(apex2);
+                            apex.setIa2Null();
+                        } else if(Arrays.equals(apex.getIa2(), apex2.getIa())){
+                            apex.addConnection(apex2);
+                            apex.setIa2Null();
                         }
-                        if(apex.getIa2() == apexIa.getIa2()) {
-                            apex.addConnection(apexIa);
-                            apexIa.setIa2Null();
-                        }
-                        if(apex.getIa2() == apexIa.getIa3()){
-                            apex.addConnection(apexIa);
-                            apexIa.setIa3Null();
-                        }
-                        apex.setIa2Null();
                     }
-                    if(apex.getIa3()!=null){
-                        if(apex.getIa3() == apexIa.getIa()) {
-                            apex.addConnection(apexIa);
-                            apexIa.setIaNull();
+                    if(apex.getIa()!=null){
+                        if(Arrays.equals(apex.getIa(),apex2.getIa3())) {
+                            apex.addConnection(apex2);
+                            apex.setIaNull();
+                        } else if(Arrays.equals(apex.getIa(),apex2.getIa2())) {
+                            apex.addConnection(apex2);
+                            apex.setIaNull();
+                        } else if(Arrays.equals(apex.getIa(),apex2.getIa())) {
+                            apex.addConnection(apex2);
+                            apex.setIaNull();
                         }
-                        if(apex.getIa3() == apexIa.getIa2()) {
-                            apex.addConnection(apexIa);
-                            apexIa.setIa2Null();
-                        }
-                        if(apex.getIa3() == apexIa.getIa3()) {
-                            apex.addConnection(apexIa);
-                            apexIa.setIa3Null();
-                        }
-                        apex.setIa3Null();
+                    }
+                    if(apex.getIa() == null && apex.getIa2() == null && apex.getIa3() == null) {
+                        break;
                     }
                 }
             }
+            System.out.print("Węzeł [" +apex.getX() +"," + apex.getY() + "," + apex.getY() + "] -> ");
+            for (int j = 0; j < apex.getConnections().size(); j++) {
+                System.out.print("[" + apex.getConnections().get(j).getX() + "," +
+                        apex.getConnections().get(j).getY() + "," +
+                        apex.getConnections().get(j).getZ() + "]");
+            }
+            System.out.println();
+        }
+    }*/
+
+    /*public void setConnections(){
+        for (Apex apex: apexList) {
+            for (Apex apex2: apexList) {
+                if(apex!=apex2 && (apex2.getIa()!=null || apex2.getIa2()!=null || apex2.getIa3()!=null)) {
+                    if(apex.getIa3()!=null){
+                        if(Arrays.equals(apex.getIa3(), apex2.getIa3())) {
+                            apex.addConnection(apex2);
+                            apex.setIa3Null();
+                        } else if(Arrays.equals(apex.getIa3(), apex2.getIa2())) {
+                            apex.addConnection(apex2);
+                            apex.setIa3Null();
+                        } else if(Arrays.equals(apex.getIa3(), apex2.getIa())) {
+                            apex.addConnection(apex2);
+                            apex.setIa3Null();
+                        }
+                    }
+                    if(apex.getIa2()!=null){
+                        if(Arrays.equals(apex.getIa2(), apex2.getIa3())) {
+                            apex.addConnection(apex2);
+                            apex.setIa2Null();
+                        } else if(Arrays.equals(apex.getIa2(), apex2.getIa2())) {
+                            apex.addConnection(apex2);
+                            apex.setIa2Null();
+                        } else if(Arrays.equals(apex.getIa2(), apex2.getIa())){
+                            apex.addConnection(apex2);
+                            apex.setIa2Null();
+                        }
+                    }
+                    if(apex.getIa()!=null){
+                        if(Arrays.equals(apex.getIa(),apex2.getIa3())) {
+                            apex.addConnection(apex2);
+                            apex.setIaNull();
+                        } else if(Arrays.equals(apex.getIa(),apex2.getIa2())) {
+                            apex.addConnection(apex2);
+                            apex.setIaNull();
+                        } else if(Arrays.equals(apex.getIa(),apex2.getIa())) {
+                            apex.addConnection(apex2);
+                            apex.setIaNull();
+                        }
+                    }
+                    if(apex.getIa() == null && apex.getIa2() == null && apex.getIa3() == null) {
+                       break;
+                    }
+                }
+            }
+            System.out.print("Węzeł [" +apex.getX() +"," + apex.getY() + "," + apex.getY() + "] -> ");
+            for (int j = 0; j < apex.getConnections().size(); j++) {
+                System.out.print("[" + apex.getConnections().get(j).getX() + "," +
+                        apex.getConnections().get(j).getY() + "," +
+                        apex.getConnections().get(j).getZ() + "]");
+            }
+            System.out.println();
+        }
+    }*/
+
+    /*public void setConnections(){
+        int k;
+        for (int i = 0; i < apexList.size(); i++) {
+            k=i;
+            if(apexList.get(i).getIa3()!=null) {
+                for (int j = i+1; j < apexList.size(); j++) {
+                    if(Arrays.equals(apexList.get(i).getIa3(),(apexList.get(j).getIa3()))) {
+                        apexList.get(i).addConnection(apexList.get(j));
+                        apexList.get(i).setIa3Null();
+                        i=j;
+                    } else if (Arrays.equals(apexList.get(i).getIa3(),(apexList.get(j).getIa2()))) {
+                        apexList.get(i).addConnection(apexList.get(j));
+                        apexList.get(i).setIa3Null();
+                        i=j;
+                    } else if (Arrays.equals(apexList.get(i).getIa3(),(apexList.get(j).getIa()))) {
+                        apexList.get(i).addConnection(apexList.get(j));
+                        apexList.get(i).setIa3Null();
+                        i=j;
+                    }
+                }
+            } else if(apexList.get(i).getIa2()!=null) {
+                for (int j = i + 1; j < apexList.size(); j++) {
+                    if (Arrays.equals(apexList.get(i).getIa2(),(apexList.get(j).getIa3()))) {
+                        apexList.get(i).addConnection(apexList.get(j));
+                        apexList.get(i).setIa2Null();
+                        i = j;
+                    } else if (Arrays.equals(apexList.get(i).getIa2(),(apexList.get(j).getIa2()))) {
+                        apexList.get(i).addConnection(apexList.get(j));
+                        apexList.get(i).setIa2Null();
+                        i = j;
+                    } else if (Arrays.equals(apexList.get(i).getIa2(),(apexList.get(j).getIa()))) {
+                        apexList.get(i).addConnection(apexList.get(j));
+                        apexList.get(i).setIa2Null();
+                        i = j;
+                    }
+                }
+            } else if(apexList.get(i).getIa()!=null) {
+                for (int j = i + 1; j < apexList.size(); j++) {
+                    if (Arrays.equals(apexList.get(i).getIa(),(apexList.get(j).getIa3()))) {
+                        apexList.get(i).addConnection(apexList.get(j));
+                        apexList.get(i).setIaNull();
+                        i=j;
+                    } else if (Arrays.equals(apexList.get(i).getIa(),(apexList.get(j).getIa2()))) {
+                        apexList.get(i).addConnection(apexList.get(j));
+                        apexList.get(i).setIaNull();
+                        i=j;
+                    } else if (Arrays.equals(apexList.get(i).getIa(),(apexList.get(j).getIa()))) {
+                        apexList.get(i).addConnection(apexList.get(j));
+                        apexList.get(i).setIaNull();
+                        i=j;
+                    }
+                }
+            }
+            i=k;
+        }
+    }*/
+
+    public void setConnections(){
+        int k;
+        for (int i = 0; i < apexList.size(); i++) {
+            k=i;
+            if(apexList.get(i).getIa3()!=null) {
+                Integer[] a = apexList.get(i).getIa3();
+                for (int j = i+1; j < apexList.size(); j++) {
+                    if(Arrays.equals(a,(apexList.get(j).getIa3()))) {
+                        apexList.get(i).addConnection(apexList.get(j));
+                        apexList.get(j).setIa3Null();
+                        i=j;
+                    } else if (Arrays.equals(a,(apexList.get(j).getIa2()))) {
+                        apexList.get(i).addConnection(apexList.get(j));
+                        apexList.get(j).setIa2Null();
+                        i=j;
+                    } else if (Arrays.equals(a,(apexList.get(j).getIa()))) {
+                        apexList.get(i).addConnection(apexList.get(j));
+                        apexList.get(j).setIaNull();
+                        i=j;
+                    }
+                }
+            } else if(apexList.get(i).getIa2()!=null) {
+                Integer[] a = apexList.get(i).getIa2();
+                for (int j = i + 1; j < apexList.size(); j++) {
+                    if (Arrays.equals(a,(apexList.get(j).getIa3()))) {
+                        apexList.get(i).addConnection(apexList.get(j));
+                        apexList.get(j).setIa3Null();
+                        i = j;
+                    } else if (Arrays.equals(a,(apexList.get(j).getIa2()))) {
+                        apexList.get(i).addConnection(apexList.get(j));
+                        apexList.get(j).setIa2Null();
+                        i = j;
+                    } else if (Arrays.equals(a,(apexList.get(j).getIa()))) {
+                        apexList.get(i).addConnection(apexList.get(j));
+                        apexList.get(j).setIaNull();
+                        i = j;
+                    }
+                }
+            } else if(apexList.get(i).getIa()!=null) {
+                Integer[] a = apexList.get(i).getIa();
+                for (int j = i + 1; j < apexList.size(); j++) {
+                    if (Arrays.equals(a,(apexList.get(j).getIa3()))) {
+                        apexList.get(i).addConnection(apexList.get(j));
+                        apexList.get(j).setIa3Null();
+                        i=j;
+                    } else if (Arrays.equals(a,(apexList.get(j).getIa2()))) {
+                        apexList.get(i).addConnection(apexList.get(j));
+                        apexList.get(j).setIa2Null();
+                        i=j;
+                    } else if (Arrays.equals(a,(apexList.get(j).getIa()))) {
+                        apexList.get(i).addConnection(apexList.get(j));
+                        apexList.get(j).setIaNull();
+                        i=j;
+                    }
+                }
+            }
+            i=k;
         }
     }
 
     public void addApexList(ApexList apexList) {
-        for(Apex apex : apexList.getApexList()) {
-            this.apexList.add(apex);
-        }
+        this.apexList.addAll(apexList.getApexList());
     }
 
 }

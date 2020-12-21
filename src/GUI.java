@@ -1,10 +1,7 @@
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
-import javax.swing.table.TableRowSorter;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 public class GUI extends JFrame {
     private JPanel mainPanel;
@@ -22,9 +19,16 @@ public class GUI extends JFrame {
     private JButton graph;
     private JTable allSlotTable;
     private JButton sortTable;
+    private JTable apexTable;
     private Matrix matrix;
+
+
+
+    private AuxiliaryData auxData;
     private int matrixSize;
     private int counter = 0;
+
+
 
     public GUI(String title) {
         super(title);
@@ -55,67 +59,32 @@ public class GUI extends JFrame {
         ));
 
 
-        generateMatrixButton.addActionListener(e -> {
-            matrixSize = Integer.parseInt(matrixSizeTextField.getText());
-            boolean identity;
-            identity = matrixType.getSelectedIndex() == 0;
-            matrix = new Matrix(matrixSize, identity);
-            mainMatrixTable.setModel(new DefaultTableModel(
-                    new Object [matrixSize][matrixSize],
-                    new String [matrixSize]
-            ));
-            for(int i = 0; i < matrixSize; i++ ) {
-                for(int j = 0; j < matrixSize; j++ ) {
-                    mainMatrixTable.setValueAt(matrix.getMatrixData()[i][j], j, i);
-                }
-            }
-        });
+        generateMatrixButton.addActionListener(e -> generateInputMatrix());
 
-        generateCholeskyButton.addActionListener(e -> {
-
-            choleskyMatrixTable.setModel(new DefaultTableModel(
-                    new Object [matrixSize][matrixSize],
-                    new String [matrixSize]
-            ));
-
-            Matrix LMatrix = matrix.cholesky();
-            populateTable(LMatrix, choleskyMatrixTable);
-
-            checkInputData(LMatrix);
-
-            DefaultTableModel model = (DefaultTableModel) timeMatrixTable.getModel();
-            model.insertRow(model.getRowCount(), new Object[]{counter+1, matrixSize , matrix.getStop() - matrix.getStart()});
-            counter++;
-
-            AuxiliaryData auxData = new AuxiliaryData(matrixSize);
-            populateSlotTables(auxData, slot1Table, slot2Table, slot3Table);
-
-            AuxiliaryData bigData = new AuxiliaryData(matrixSize);
-            bigData.mergeApexLists();
-            populateBigTable(bigData, allSlotTable);
-        });
+        generateCholeskyButton.addActionListener(e -> generateCholeskyData());
 
         graph.addActionListener(e -> graph());
 
-        sortTable.addActionListener(e -> {
-            TableRowSorter<TableModel> sorter = new TableRowSorter<>(allSlotTable.getModel());
-            allSlotTable.setRowSorter(sorter);
-            List<RowSorter.SortKey> sortKeys = new ArrayList<>();
-            int w1 = 1;
-            sortKeys.add(new RowSorter.SortKey(w1, SortOrder.ASCENDING));
-            int w2 = 2;
-            sortKeys.add(new RowSorter.SortKey(w2, SortOrder.ASCENDING));
-            int w3 = 3;
-            sortKeys.add(new RowSorter.SortKey(w3, SortOrder.ASCENDING));
-            sorter.setSortKeys(sortKeys);
-            sorter.sort();
-            allSlotTable.getTableHeader().setEnabled(false);
-            int bigtable = allSlotTable.getRowCount();
-            for(int i = 0; i < bigtable; i++ ) {
-                allSlotTable.setValueAt(i+1,i,0);
-                allSlotTable.convertRowIndexToModel(i);
+        sortTable.addActionListener(e -> sortBigTable());
+    }
+    public AuxiliaryData getAuxData() {
+        return auxData;
+    }
+
+    private void generateInputMatrix(){
+        matrixSize = Integer.parseInt(matrixSizeTextField.getText());
+        boolean identity;
+        identity = matrixType.getSelectedIndex() == 0;
+        matrix = new Matrix(matrixSize, identity);
+        mainMatrixTable.setModel(new DefaultTableModel(
+                new Object [matrixSize][matrixSize],
+                new String [matrixSize]
+        ));
+        for(int i = 0; i < matrixSize; i++ ) {
+            for(int j = 0; j < matrixSize; j++ ) {
+                mainMatrixTable.setValueAt(matrix.getMatrixData()[i][j], j, i);
             }
-        });
+        }
     }
 
     private void checkInputData(Matrix data) {
@@ -134,6 +103,45 @@ public class GUI extends JFrame {
         }
     }
 
+    private void generateCholeskyData() {
+        choleskyMatrixTable.setModel(new DefaultTableModel(
+                new Object [matrixSize][matrixSize],
+                new String [matrixSize]
+        ));
+
+        Matrix LMatrix = matrix.cholesky();
+        populateTable(LMatrix, choleskyMatrixTable);
+
+        checkInputData(LMatrix);
+
+        DefaultTableModel model = (DefaultTableModel) timeMatrixTable.getModel();
+        model.insertRow(model.getRowCount(), new Object[]{counter+1, matrixSize , matrix.getStop() - matrix.getStart()});
+        counter++;
+
+       auxData = new AuxiliaryData(matrixSize);
+
+        populateSlotTables(auxData, slot1Table, slot2Table, slot3Table);
+        populateTable(auxData.getFullApexList(), auxData.getFullApexNumbers(), allSlotTable);
+    }
+
+    private void sortBigTable() {
+        auxData.sortApexList();
+        populateTable(auxData.getFullApexList(), auxData.getFullApexNumbers(), allSlotTable);
+        auxData.getFullApexList().setConnections();
+
+
+       for (int i = 0; i < auxData.getFullApexList().getApexList().size(); i++) {
+            System.out.print("Węzeł [" + auxData.getFullApexList().getApexList().get(i).getX() + "," + auxData.getFullApexList().getApexList().get(i).getY() +
+                    ","+ auxData.getFullApexList().getApexList().get(i).getZ()  + "] -> ");
+            for (int j = 0; j < auxData.getFullApexList().getApexList().get(i).getConnections().size(); j++) {
+                System.out.print("[" + auxData.getFullApexList().getApexList().get(i).getConnections().get(j).getX() + "," +
+                        auxData.getFullApexList().getApexList().get(i).getConnections().get(j).getY() + "," +
+                        auxData.getFullApexList().getApexList().get(i).getConnections().get(j).getZ() + "]");
+            }
+            System.out.println();
+        }
+    }
+
     private void populateTable(Matrix data, JTable table) {
         for(int i = 0; i < matrixSize; i++ ) {
             for(int j = 0; j < matrixSize; j++ ) {
@@ -142,14 +150,15 @@ public class GUI extends JFrame {
         }
     }
 
-    private void populateTable(ApexList apexList, ArrayList<Integer> numbers, int number, String operation, JTable s1) {
-        for(int i = 0; i < number; i++ ) {
+    private void populateTable(ApexList apexList, ArrayList<Integer> numbers, JTable s1) {
+        ((DefaultTableModel) s1.getModel()).getDataVector().removeAllElements();
+        for(int i = 0; i < apexList.getApexList().size(); i++ ) {
             ((DefaultTableModel) s1.getModel()).insertRow(s1.getRowCount(), new Object[]{
                     numbers.get(i),
                     apexList.getApexList().get(i).getX(),
                     apexList.getApexList().get(i).getY(),
                     apexList.getApexList().get(i).getZ(),
-                    operation,
+                    apexList.getApexList().get(i).getOperation(),
                     Arrays.toString(apexList.getApexList().get(i).getIa3()),
                     Arrays.toString(apexList.getApexList().get(i).getIa2()),
                     Arrays.toString(apexList.getApexList().get(i).getIa())
@@ -161,29 +170,9 @@ public class GUI extends JFrame {
         ((DefaultTableModel) s1.getModel()).getDataVector().removeAllElements();
         ((DefaultTableModel) s2.getModel()).getDataVector().removeAllElements();
         ((DefaultTableModel) s3.getModel()).getDataVector().removeAllElements();
-        populateTable(data.getS1ApexList(), data.getS1Numbers(), data.getS1Number(), "sqrt", s1);
-        populateTable(data.getS2ApexList(), data.getS2Numbers(), data.getS2Number(), "/", s2);
-        populateTable(data.getS3ApexList(), data.getS3Numbers(), data.getS3Number(), "-*", s3);
-    }
-
-    private void populateBigTable(AuxiliaryData data, JTable allSlotTable) {
-        int bigtable = data.getS1Number()+ data.getS2Number()+ data.getS3Number();
-        allSlotTable.setModel(new DefaultTableModel(
-                new Object [bigtable][8],
-                new String [] {"Nr.","W1","W2","W3","Op","Ia3", "Ia2","Ia1"}
-        ));
-
-        for(int i = 0; i < bigtable; i++ ) {
-            for(int j = 0; j < 8; j++) {
-                if (i < data.getS1Number()) {
-                    allSlotTable.setValueAt(slot1Table.getValueAt(i, j), i, j);
-                } if (i >= data.getS1Number() && i < data.getS2Number() + data.getS1Number()) {
-                    allSlotTable.setValueAt(slot2Table.getValueAt(i-data.getS1Number(), j), i, j);
-                } if (i >= data.getS1Number()+ data.getS2Number()) {
-                    allSlotTable.setValueAt(slot3Table.getValueAt(i-(data.getS1Number()+data.getS2Number()), j), i , j);
-                }
-            }
-        }
+        populateTable(data.getS1ApexList(), data.getS1Numbers(), s1);
+        populateTable(data.getS2ApexList(), data.getS2Numbers(), s2);
+        populateTable(data.getS3ApexList(), data.getS3Numbers(), s3);
     }
 
     private void graph() {
@@ -192,13 +181,4 @@ public class GUI extends JFrame {
         pictureFrame.pack();
         pictureFrame.setVisible(true);
     }
-
-    public static void main(String[] args) {
-        JFrame frame = new GUI("Cholesky Project");
-        frame.setResizable(false);
-        frame.setVisible(true);
-    }
-
-
-
 }

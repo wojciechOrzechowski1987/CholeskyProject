@@ -2,24 +2,20 @@ import java.util.ArrayList;
 
 public class Apex {
 
-    private int x;
-    private int y;
-    private int z;
+    private final int x;
+    private final int y;
+    private final int z;
     private String operation;
     private Integer[] ia;
     private Integer[] ia2;
     private Integer[] ia3;
-    private ArrayList<Apex> connections;
-
-    public Apex() {
-        connections = new ArrayList<>();
-    }
+    private final ArrayList<Apex> connections;
 
     public Apex(int x, int y, int z) {
         this.x = x;
         this.y = y;
         this.z = z;
-        connections = new ArrayList<>();
+        this.connections = new ArrayList<>();
     }
 
     public int getX() {
@@ -32,10 +28,6 @@ public class Apex {
 
     public int getZ() {
         return z;
-    }
-
-    public void setZ(int z) {
-        this.z = z;
     }
 
     public String getOperation() {
@@ -82,13 +74,12 @@ public class Apex {
         this.ia3 = null;
     }
 
-    /*Dodawanie połączeń*/
     public void addConnection(Apex apex){
         connections.add(apex);
     }
-    /*Generowanie łuku*/
-    public Arc createArc(Apex apex){
-        return new Arc(this, apex);
+
+    public ArrayList<Apex> getConnections() {
+        return connections;
     }
 
 }
