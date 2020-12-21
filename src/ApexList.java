@@ -205,15 +205,15 @@ public class ApexList {
         for (int j = i + 1; j < apexList.size(); j++) {
             if (Arrays.equals(a,(apexList.get(j).getIa3()))) {
                 apexList.get(i).addConnection(apexList.get(j));
-                //apexList.get(i).setIa3Null();
+                apexList.get(j).setIa3Null();
                 i = j;
             } else if (Arrays.equals(a,(apexList.get(j).getIa2()))) {
                 apexList.get(i).addConnection(apexList.get(j));
-                //apexList.get(i).setIa2Null();
+                apexList.get(j).setIa2Null();
                 i = j;
             } else if (Arrays.equals(a,(apexList.get(j).getIa()))) {
                 apexList.get(i).addConnection(apexList.get(j));
-                //apexList.get(i).setIaNull();
+                apexList.get(j).setIaNull();
                 i = j;
             }
         }
