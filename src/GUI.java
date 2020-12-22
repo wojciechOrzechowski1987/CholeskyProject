@@ -19,7 +19,6 @@ public class GUI extends JFrame {
     private JButton graph;
     private JTable allSlotTable;
     private JButton sortTable;
-    private JTable apexTable;
     private Matrix matrix;
 
 
@@ -66,9 +65,6 @@ public class GUI extends JFrame {
         graph.addActionListener(e -> graph());
 
         sortTable.addActionListener(e -> sortBigTable());
-    }
-    public AuxiliaryData getAuxData() {
-        return auxData;
     }
 
     private void generateInputMatrix(){
