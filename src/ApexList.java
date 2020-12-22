@@ -187,22 +187,22 @@ public class ApexList {
             if(apexList.get(i).getIa3()!=null) {
                 Integer[] a = Arrays.copyOf(apexList.get(i).getIa3(),apexList.get(i).getIa3().length);
                 apexList.get(i).setIa3Null();
-                asd(i, a);
-            } else if(apexList.get(i).getIa2()!=null) {
+                setNullIas(i, a);
+            } if(apexList.get(i).getIa2()!=null) {
                 Integer[] a = Arrays.copyOf(apexList.get(i).getIa2(),apexList.get(i).getIa2().length);
                 apexList.get(i).setIa2Null();
-                asd(i, a);
-            } else if(apexList.get(i).getIa()!=null) {
+                setNullIas(i, a);
+            } if(apexList.get(i).getIa()!=null) {
                 Integer[] a = Arrays.copyOf(apexList.get(i).getIa(),apexList.get(i).getIa().length);
                 apexList.get(i).setIaNull();
-                asd(i, a);
+                setNullIas(i, a);
             }
             i=k;
         }
     }
 
-    private void asd(int i, Integer[] a) {
-        for (int j = i + 1; j < apexList.size(); j++) {
+    private void setNullIas(int i, Integer[] a) {
+        for (int j = i+1; j < apexList.size(); j++) {
             if (Arrays.equals(a,(apexList.get(j).getIa3()))) {
                 apexList.get(i).addConnection(apexList.get(j));
                 apexList.get(j).setIa3Null();
