@@ -5,6 +5,7 @@ public class Apex {
     private final int x;
     private final int y;
     private final int z;
+    private final Integer[] cord;
     private String operation;
     private Integer[] ia;
     private Integer[] ia2;
@@ -15,6 +16,7 @@ public class Apex {
         this.x = x;
         this.y = y;
         this.z = z;
+        this.cord = new Integer[]{x, y, z};
         this.connections = new ArrayList<>();
     }
 
@@ -80,6 +82,10 @@ public class Apex {
 
     public ArrayList<Apex> getConnections() {
         return connections;
+    }
+
+    public Integer[] getCord() {
+        return cord;
     }
 
 }

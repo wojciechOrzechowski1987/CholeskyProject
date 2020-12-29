@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class GUI extends JFrame {
+
     private JPanel mainPanel;
     private JTextField matrixSizeTextField;
     private JButton generateMatrixButton;
@@ -20,41 +21,42 @@ public class GUI extends JFrame {
     private JTable allSlotTable;
     private JButton sortTable;
     private Matrix matrix;
-
-
-
+    private JTable apexTable;
     private AuxiliaryData auxData;
     private int matrixSize;
     private int counter = 0;
-
-
 
     public GUI(String title) {
         super(title);
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         this.setContentPane(mainPanel);
-        this.setSize(1280,600);
+        this.setSize(1280, 600);
         this.setLocationRelativeTo(null);
         this.setResizable(false);
         timeMatrixTable.setModel(new DefaultTableModel(
                 null,
-                new String [] {"Nr Pomiaru","N :" ,"Czas w [ns]"}
+                new String[]{"Nr Pomiaru", "N :", "Czas w [ns]"}
         ));
         slot1Table.setModel(new DefaultTableModel(
                 null,
-                new String [] {"Nr.","W1","W2","W3","Op.","Ia3", "Ia2","Ia1"}
+                new String[]{"Nr.", "W1", "W2", "W3", "Op.", "Ia3", "Ia2", "Ia1"}
         ));
         slot2Table.setModel(new DefaultTableModel(
                 null,
-                new String [] {"Nr.","W1","W2","W3","Op.","Ia3", "Ia2","Ia1"}
+                new String[]{"Nr.", "W1", "W2", "W3", "Op.", "Ia3", "Ia2", "Ia1"}
         ));
         slot3Table.setModel(new DefaultTableModel(
                 null,
-                new String [] {"Nr.","W1","W2","W3","Op.","Ia3", "Ia2","Ia1"}
+                new String[]{"Nr.", "W1", "W2", "W3", "Op.", "Ia3", "Ia2", "Ia1"}
         ));
         allSlotTable.setModel(new DefaultTableModel(
                 null,
-                new String [] {"Nr.","W1","W2","W3","Op.","Ia3", "Ia2","Ia1"}
+                new String[]{"Nr.", "W1", "W2", "W3", "Op.", "Ia3", "Ia2", "Ia1"}
+        ));
+
+        apexTable.setModel(new DefaultTableModel(
+                null,
+                new String[]{"Węzeł", "Połączenie 1", "Połączenie 2", "Połączenie 3"}
         ));
 
 
@@ -67,17 +69,17 @@ public class GUI extends JFrame {
         sortTable.addActionListener(e -> sortBigTable());
     }
 
-    private void generateInputMatrix(){
+    private void generateInputMatrix() {
         matrixSize = Integer.parseInt(matrixSizeTextField.getText());
         boolean identity;
         identity = matrixType.getSelectedIndex() == 0;
         matrix = new Matrix(matrixSize, identity);
         mainMatrixTable.setModel(new DefaultTableModel(
-                new Object [matrixSize][matrixSize],
-                new String [matrixSize]
+                new Object[matrixSize][matrixSize],
+                new String[matrixSize]
         ));
-        for(int i = 0; i < matrixSize; i++ ) {
-            for(int j = 0; j < matrixSize; j++ ) {
+        for (int i = 0; i < matrixSize; i++) {
+            for (int j = 0; j < matrixSize; j++) {
                 mainMatrixTable.setValueAt(matrix.getMatrixData()[i][j], j, i);
             }
         }
@@ -87,8 +89,8 @@ public class GUI extends JFrame {
         Matrix LTMatrix = data.transpose();
         Matrix check = matrix.sub((data.multiply(LTMatrix)));
         int sum = 0;
-        for(int i = 0; i < matrixSize; i++ ) {
-            for(int j = 0; j < matrixSize; j++ ) {
+        for (int i = 0; i < matrixSize; i++) {
+            for (int j = 0; j < matrixSize; j++) {
                 sum += sum + check.getMatrixData()[i][j];
             }
         }
@@ -101,8 +103,8 @@ public class GUI extends JFrame {
 
     private void generateCholeskyData() {
         choleskyMatrixTable.setModel(new DefaultTableModel(
-                new Object [matrixSize][matrixSize],
-                new String [matrixSize]
+                new Object[matrixSize][matrixSize],
+                new String[matrixSize]
         ));
 
         Matrix LMatrix = matrix.cholesky();
@@ -111,10 +113,10 @@ public class GUI extends JFrame {
         checkInputData(LMatrix);
 
         DefaultTableModel model = (DefaultTableModel) timeMatrixTable.getModel();
-        model.insertRow(model.getRowCount(), new Object[]{counter+1, matrixSize , matrix.getStop() - matrix.getStart()});
+        model.insertRow(model.getRowCount(), new Object[]{counter + 1, matrixSize, matrix.getStop() - matrix.getStart()});
         counter++;
 
-       auxData = new AuxiliaryData(matrixSize);
+        auxData = new AuxiliaryData(matrixSize);
 
         populateSlotTables(auxData, slot1Table, slot2Table, slot3Table);
         populateTable(auxData.getFullApexList(), auxData.getFullApexNumbers(), allSlotTable);
@@ -124,23 +126,12 @@ public class GUI extends JFrame {
         auxData.sortApexList();
         populateTable(auxData.getFullApexList(), auxData.getFullApexNumbers(), allSlotTable);
         auxData.getFullApexList().setConnections();
-
-
-       for (int i = 0; i < auxData.getFullApexList().getApexList().size(); i++) {
-            System.out.print("Węzeł [" + auxData.getFullApexList().getApexList().get(i).getX() + "," + auxData.getFullApexList().getApexList().get(i).getY() +
-                    ","+ auxData.getFullApexList().getApexList().get(i).getZ()  + "] -> ");
-            for (int j = 0; j < auxData.getFullApexList().getApexList().get(i).getConnections().size(); j++) {
-                System.out.print("[" + auxData.getFullApexList().getApexList().get(i).getConnections().get(j).getX() + "," +
-                        auxData.getFullApexList().getApexList().get(i).getConnections().get(j).getY() + "," +
-                        auxData.getFullApexList().getApexList().get(i).getConnections().get(j).getZ() + "]");
-            }
-            System.out.println();
-        }
+        populateApexConnections(auxData.getFullApexList(), apexTable);
     }
 
     private void populateTable(Matrix data, JTable table) {
-        for(int i = 0; i < matrixSize; i++ ) {
-            for(int j = 0; j < matrixSize; j++ ) {
+        for (int i = 0; i < matrixSize; i++) {
+            for (int j = 0; j < matrixSize; j++) {
                 table.setValueAt(data.getMatrixData()[i][j], i, j);
             }
         }
@@ -148,7 +139,7 @@ public class GUI extends JFrame {
 
     private void populateTable(ApexList apexList, ArrayList<Integer> numbers, JTable s1) {
         ((DefaultTableModel) s1.getModel()).getDataVector().removeAllElements();
-        for(int i = 0; i < apexList.getApexList().size(); i++ ) {
+        for (int i = 0; i < apexList.getApexList().size(); i++) {
             ((DefaultTableModel) s1.getModel()).insertRow(s1.getRowCount(), new Object[]{
                     numbers.get(i),
                     apexList.getApexList().get(i).getX(),
@@ -177,4 +168,20 @@ public class GUI extends JFrame {
         pictureFrame.pack();
         pictureFrame.setVisible(true);
     }
+
+    private void populateApexConnections(ApexList apexList, JTable table) {
+        ((DefaultTableModel) table.getModel()).getDataVector().removeAllElements();
+        for (int i = 0; i < apexList.getApexList().size(); i++) {
+            ((DefaultTableModel) table.getModel()).insertRow(table.getRowCount(), new Object[]{
+                    "[" + apexList.getApexList().get(i).getX() + "," + apexList.getApexList().get(i).getY() + "," + apexList.getApexList().get(i).getZ() + "]",
+            });
+        }
+        for (int i = 0; i < apexList.getApexList().size(); i++) {
+            for (int j = 0; j < apexList.getApexList().get(i).getConnections().size(); j++) {
+                table.setValueAt(Arrays.toString(apexList.getApexList().get(i).getConnections().get(j).getCord()),i,j+1);
+            }
+        }
+
+    }
+
 }
