@@ -1,3 +1,5 @@
+import java.util.Arrays;
+
 public class Matrix {
   
     private final int row;
@@ -10,6 +12,18 @@ public class Matrix {
         this.row = n;
         this.column = m;
         this.matrixData = new double[n][m];
+    }
+
+    public Matrix(int n, int m, double [][] data) {
+        this.row = n;
+        this.column = m;
+        this.matrixData = data;
+    }
+
+    public Matrix(int n, double[][] data) {
+        this.row = n;
+        this.column = n;
+        this.matrixData = data;
     }
 
     public Matrix (int n, boolean x) {
@@ -51,9 +65,9 @@ public class Matrix {
 
     public Matrix multiply(Matrix B) {
         Matrix A = this;
-        Matrix C = new Matrix(A.column, B.row);
-        for (int i = 0; i < C.column; i++) {
-            for (int j = 0; j < C.row; j++) {
+        Matrix C = new Matrix(A.row, B.column);
+        for (int i = 0; i < C.row; i++) {
+            for (int j = 0; j < C.column; j++) {
                 for (int k = 0; k < A.column; k++) {
                     C.matrixData[i][j] += (A.matrixData[i][k] * B.matrixData[k][j]);
                 }
@@ -124,5 +138,22 @@ public class Matrix {
     public double[][] getMatrixData() {
         return matrixData;
     }
+
+    public double getMatrixData(int i, int j) {
+        return matrixData[i][j];
+    }
+
+    public void printMatrix() {
+        for (int i = 0; i < this.row; i++) {
+            System.out.print("[ "+this.matrixData[i][0]);
+            for (int j = 1; j < this.column; j++) {
+                System.out.print(", "+this.matrixData[i][j]);
+            }
+            System.out.println(" ]");
+        }
+    }
+
+
+
 
 }

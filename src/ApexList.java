@@ -18,7 +18,7 @@ public class ApexList implements Cloneable {
         return apexList;
     }
 
-   /* public void printConnections() {
+   public void printConnections() {
         for (Apex apex : apexList) {
             System.out.print("Węzeł [" + apex.getX() + "," + apex.getY() +
                     "," + apex.getZ() + "] -> ");
@@ -29,7 +29,7 @@ public class ApexList implements Cloneable {
             }
             System.out.println();
         }
-    }*/
+    }
 
     public void setConnections(){
         int k;

@@ -56,7 +56,7 @@ public class GUI extends JFrame {
 
         apexTable.setModel(new DefaultTableModel(
                 null,
-                new String[]{"Węzeł", "Połączenie 1", "Połączenie 2", "Połączenie 3"}
+                new String[]{"Węzeł", "Połączenie 1", "Połączenie 2", "Połączenie 3", "EP", "Takt"}
         ));
 
 
@@ -67,6 +67,59 @@ public class GUI extends JFrame {
         graph.addActionListener(e -> graph());
 
         sortTable.addActionListener(e -> sortBigTable());
+
+        /*Matrix D = new Matrix(3, new double [][]{{1,0,0},{0,1,0},{0,0,1}});
+        Matrix D1 = new Matrix (3,1, new double [][] {{1},{0},{0}});
+        Matrix D2 = new Matrix (3,1, new double [][] {{0},{1},{0}});
+        Matrix D3 = new Matrix (3,1, new double [][] {{0},{0},{1}});
+        Matrix Fs11 = new Matrix (1,3, new double [][] {{1,1,1}});
+        Matrix Fs21 = new Matrix(2,3, new double[][] {{1,1,-1},{-1,0,-1}});
+        Matrix Fs22 = new Matrix(2,3, new double[][] {{1,1,1},{1,1,1}});
+        Matrix Ft = new Matrix (1,3, new double[][] {{1,1,1}});
+
+        Matrix F = new Matrix(3,3,new double[][] {{1,1,-1},{-1,0,-1},{1,1,1}});*/
+
+       /* System.out.println("Matrix D");
+        D.printMatrix();
+        System.out.println("Matrix Fs11");
+        Fs11.multiply(D1).printMatrix();
+        System.out.println("Marix Fs11");
+        Fs11.multiply(D2).printMatrix();
+        System.out.println("Marix Fs11");
+        Fs11.multiply(D3).printMatrix();*/
+
+        /*System.out.println("Marix Fs21");
+        Fs21.multiply(D1).printMatrix();
+        System.out.println("Marix Fs21");
+        Fs21.multiply(D2).printMatrix();
+        System.out.println("Marix Fs21");
+        Fs21.multiply(D3).printMatrix();
+        System.out.println("Marix FS");
+        Fs21.multiply(D).printMatrix();
+        System.out.println("Marix FT");
+        Ft.multiply(D).printMatrix();
+
+        System.out.println("Matrix F");
+        F.multiply(D).printMatrix();*/
+
+
+        /*System.out.println("Marix Fs22");
+        Fs22.multiply(D1).printMatrix();
+        System.out.println("Marix Fs22");
+        Fs22.multiply(D2).printMatrix();
+        System.out.println("Marix Fs22");
+        Fs22.multiply(D2).printMatrix();*/
+
+        /*System.out.println("Marix Ft");
+        Ft.multiply(D1).printMatrix();
+        System.out.println("Marix Ft");
+        Ft.multiply(D2).printMatrix();
+        System.out.println("Marix Ft");
+        Ft.multiply(D3).printMatrix();*/
+
+
+
+
     }
 
     private void generateInputMatrix() {
@@ -127,6 +180,7 @@ public class GUI extends JFrame {
         populateTable(auxData.getFullApexList(), auxData.getFullApexNumbers(), allSlotTable);
         auxData.getFullApexList().setConnections();
         populateApexConnections(auxData.getFullApexList(), apexTable);
+
     }
 
     private void populateTable(Matrix data, JTable table) {
@@ -181,6 +235,17 @@ public class GUI extends JFrame {
                 table.setValueAt(Arrays.toString(apexList.getApexList().get(i).getConnections().get(j).getCord()),i,j+1);
             }
         }
+
+
+        Matrix D = new Matrix(3, new double [][]{{1,0,0},{0,1,0},{0,0,1}});
+        Matrix F = new Matrix(3,3,new double[][] {{1,1,-1},{-1,0,-1},{1,1,1}});
+
+        for (int i = 0; i < apexList.getApexList().size(); i++) {
+            apexList.getApexList().get(i).setK(new Matrix(3,3,new double[][] {{1,1,-1},{-1,0,-1},{1,1,1}}));
+            table.setValueAt(Arrays.toString(apexList.getApexList().get(i).getEp()),i,4);
+            table.setValueAt(apexList.getApexList().get(i).getTakt(),i,5);
+        }
+
 
     }
 
