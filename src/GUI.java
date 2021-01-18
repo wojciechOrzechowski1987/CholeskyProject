@@ -1,7 +1,11 @@
+import javafx.util.StringConverter;
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 
 public class GUI extends JFrame {
@@ -77,20 +81,49 @@ public class GUI extends JFrame {
         ));
 
 
-        s1EpTable.setModel(new DefaultTableModel(
-                null,
-                new String[]{"EP", "Takt", "Operacja", "Wezły"}
-        ));
+        String[] epColumns = new String[]{"EP1", "EP2", "Takt", "Operacja", "Wezły"};
 
-        s2EpTable.setModel(new DefaultTableModel(
-                null,
-                new String[]{"EP", "Takt", "Operacja", "Wezły"}
-        ));
+       s1EpTable.setModel(new DefaultTableModel(null,epColumns) {
+            @Override
+            public Class getColumnClass(int column) {
+                switch (column) {
+                    case 0:
+                        return Integer.class;
+                    case 1:
+                        return Integer.class;
+                    default:
+                        return String.class;
+                }
+            }
+        });
 
-        s3EpTable.setModel(new DefaultTableModel(
-                null,
-                new String[]{"EP", "Takt", "Operacja", "Wezły"}
-        ));
+        s2EpTable.setModel(new DefaultTableModel(null,epColumns) {
+            @Override
+            public Class getColumnClass(int column) {
+                switch (column) {
+                    case 0:
+                        return Integer.class;
+                    case 1:
+                        return Integer.class;
+                    default:
+                        return String.class;
+                }
+            }
+        });
+
+        s3EpTable.setModel(new DefaultTableModel(null,epColumns) {
+            @Override
+            public Class getColumnClass(int column) {
+                switch (column) {
+                    case 0:
+                        return Integer.class;
+                    case 1:
+                        return Integer.class;
+                    default:
+                        return String.class;
+                }
+            }
+        });
 
         F1 = new Matrix(3,3,new double[][] {{1, 1, -1}, {-1, 1, -1}, {1, 1, 1}});
         F2 = new Matrix(3,3,new double[][] {{0, 1, 0}, {-1, 1, -1}, {1, 1, 1}});
@@ -279,13 +312,24 @@ public class GUI extends JFrame {
         ((DefaultTableModel) table.getModel()).getDataVector().removeAllElements();
         for (int i = 0; i < apexList.getApexList().size(); i++) {
             apexList.getApexList().get(i).setK(matrix);
+            Double[] eps = apexList.getApexList().get(i).getEp();
             ((DefaultTableModel) table.getModel()).insertRow(table.getRowCount(), new Object[]{
-                    Arrays.toString(apexList.getApexList().get(i).getEp()),
+                    eps[0],
+                    eps[1],
                     apexList.getApexList().get(i).getTakt(),
                     apexList.getApexList().get(i).getOperation(),
                     "[" + apexList.getApexList().get(i).getX() + "," + apexList.getApexList().get(i).getY() + "," + apexList.getApexList().get(i).getZ() + "]"
             });
-            table.setAutoCreateRowSorter(true);
+            TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<DefaultTableModel>((DefaultTableModel) table.getModel());
+            table.setRowSorter(sorter);
+
+            List<RowSorter.SortKey> sortKeys = new ArrayList<>(25);
+            sortKeys.add(new RowSorter.SortKey(1, SortOrder.ASCENDING));
+            sortKeys.add(new RowSorter.SortKey(0, SortOrder.ASCENDING));
+            sorter.setSortKeys(sortKeys);
+
+
+
             double min = apexList.getApexList().get(0).getTakt(), max = apexList.getApexList().get(0).getTakt();
             for (Apex apex : apexList.getApexList()) {
                 if (min > apex.getTakt()) {
