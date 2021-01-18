@@ -3,6 +3,7 @@ import javax.swing.table.DefaultTableModel;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+
 public class GUI extends JFrame {
 
     private JPanel mainPanel;
@@ -22,6 +23,22 @@ public class GUI extends JFrame {
     private JButton sortTable;
     private Matrix matrix;
     private JTable apexTable;
+    private JTable s1EpTable;
+    private JLabel s1takt;
+    private JLabel s2takt;
+    private JLabel s3takt;
+    private final Matrix F1;
+    private final Matrix F2;
+    private final Matrix F3;
+    private JTable s1Fmatrix;
+    private JTable s2EpTable;
+    private JTable s3EpTable;
+    private JTable s2Fmatrix;
+    private JTable s3Fmatrix;
+    private JLabel s1pic;
+    private JLabel s2pic;
+    private JLabel s3pic;
+
     private AuxiliaryData auxData;
     private int matrixSize;
     private int counter = 0;
@@ -56,8 +73,29 @@ public class GUI extends JFrame {
 
         apexTable.setModel(new DefaultTableModel(
                 null,
-                new String[]{"Węzeł", "Połączenie 1", "Połączenie 2", "Połączenie 3", "EP", "Takt"}
+                new String[]{"Węzeł", "Połączenie 1", "Połączenie 2", "Połączenie 3"}
         ));
+
+
+        s1EpTable.setModel(new DefaultTableModel(
+                null,
+                new String[]{"EP", "Takt", "Operacja", "Wezły"}
+        ));
+
+        s2EpTable.setModel(new DefaultTableModel(
+                null,
+                new String[]{"EP", "Takt", "Operacja", "Wezły"}
+        ));
+
+        s3EpTable.setModel(new DefaultTableModel(
+                null,
+                new String[]{"EP", "Takt", "Operacja", "Wezły"}
+        ));
+
+        F1 = new Matrix(3,3,new double[][] {{1, 1, -1}, {-1, 1, -1}, {1, 1, 1}});
+        F2 = new Matrix(3,3,new double[][] {{0, 1, 0}, {-1, 1, -1}, {1, 1, 1}});
+        F3 = new Matrix(3,3,new double[][] {{1, 1, -1}, {-1, 1, -1}, {0, 1, 0}});
+
 
 
         generateMatrixButton.addActionListener(e -> generateInputMatrix());
@@ -75,20 +113,18 @@ public class GUI extends JFrame {
         Matrix Fs11 = new Matrix (1,3, new double [][] {{1,1,1}});
         Matrix Fs21 = new Matrix(2,3, new double[][] {{1,1,-1},{-1,0,-1}});
         Matrix Fs22 = new Matrix(2,3, new double[][] {{1,1,1},{1,1,1}});
-        Matrix Ft = new Matrix (1,3, new double[][] {{1,1,1}});
+        Matrix Ft = new Matrix (1,3, new double[][] {{1,1,1}});*/
 
-        Matrix F = new Matrix(3,3,new double[][] {{1,1,-1},{-1,0,-1},{1,1,1}});*/
-
-       /* System.out.println("Matrix D");
+        /*System.out.println("Matrix D");
         D.printMatrix();
         System.out.println("Matrix Fs11");
         Fs11.multiply(D1).printMatrix();
         System.out.println("Marix Fs11");
         Fs11.multiply(D2).printMatrix();
         System.out.println("Marix Fs11");
-        Fs11.multiply(D3).printMatrix();*/
+        Fs11.multiply(D3).printMatrix();
 
-        /*System.out.println("Marix Fs21");
+        System.out.println("Marix Fs21");
         Fs21.multiply(D1).printMatrix();
         System.out.println("Marix Fs21");
         Fs21.multiply(D2).printMatrix();
@@ -100,29 +136,27 @@ public class GUI extends JFrame {
         Ft.multiply(D).printMatrix();
 
         System.out.println("Matrix F");
-        F.multiply(D).printMatrix();*/
+        F.multiply(D).printMatrix();
 
 
-        /*System.out.println("Marix Fs22");
+        System.out.println("Marix Fs22");
         Fs22.multiply(D1).printMatrix();
         System.out.println("Marix Fs22");
         Fs22.multiply(D2).printMatrix();
         System.out.println("Marix Fs22");
-        Fs22.multiply(D2).printMatrix();*/
+        Fs22.multiply(D2).printMatrix();
 
-        /*System.out.println("Marix Ft");
+        System.out.println("Marix Ft");
         Ft.multiply(D1).printMatrix();
         System.out.println("Marix Ft");
         Ft.multiply(D2).printMatrix();
         System.out.println("Marix Ft");
         Ft.multiply(D3).printMatrix();*/
 
-
-
-
     }
 
     private void generateInputMatrix() {
+        sortTable.setEnabled(true);
         matrixSize = Integer.parseInt(matrixSizeTextField.getText());
         boolean identity;
         identity = matrixType.getSelectedIndex() == 0;
@@ -133,7 +167,7 @@ public class GUI extends JFrame {
         ));
         for (int i = 0; i < matrixSize; i++) {
             for (int j = 0; j < matrixSize; j++) {
-                mainMatrixTable.setValueAt(matrix.getMatrixData()[i][j], j, i);
+                mainMatrixTable.setValueAt(matrix.getMatrixData()[i][j], i, j);
             }
         }
     }
@@ -176,10 +210,14 @@ public class GUI extends JFrame {
     }
 
     private void sortBigTable() {
+        sortTable.setEnabled(false);
         auxData.sortApexList();
         populateTable(auxData.getFullApexList(), auxData.getFullApexNumbers(), allSlotTable);
         auxData.getFullApexList().setConnections();
         populateApexConnections(auxData.getFullApexList(), apexTable);
+        populateEp(auxData.getFullApexList(), s1EpTable, s1Fmatrix, F1, s1takt, s1pic, "structure1.png");
+        populateEp(auxData.getFullApexList(), s2EpTable, s2Fmatrix, F2, s2takt, s2pic, "structure1.png");
+        populateEp(auxData.getFullApexList(), s3EpTable, s3Fmatrix, F3, s3takt, s3pic, "structure1.png");
 
     }
 
@@ -218,7 +256,7 @@ public class GUI extends JFrame {
 
     private void graph() {
         JFrame pictureFrame = new JFrame("Graf zależności informacyjnej");
-        pictureFrame.add(new JLabel(new ImageIcon("CholeskyGraph.png")));
+        pictureFrame.add(new JLabel(new ImageIcon(this.getClass().getResource("CholeskyGraph.png"))));
         pictureFrame.pack();
         pictureFrame.setVisible(true);
     }
@@ -235,18 +273,41 @@ public class GUI extends JFrame {
                 table.setValueAt(Arrays.toString(apexList.getApexList().get(i).getConnections().get(j).getCord()),i,j+1);
             }
         }
-
-
-        Matrix D = new Matrix(3, new double [][]{{1,0,0},{0,1,0},{0,0,1}});
-        Matrix F = new Matrix(3,3,new double[][] {{1,1,-1},{-1,0,-1},{1,1,1}});
-
-        for (int i = 0; i < apexList.getApexList().size(); i++) {
-            apexList.getApexList().get(i).setK(new Matrix(3,3,new double[][] {{1,1,-1},{-1,0,-1},{1,1,1}}));
-            table.setValueAt(Arrays.toString(apexList.getApexList().get(i).getEp()),i,4);
-            table.setValueAt(apexList.getApexList().get(i).getTakt(),i,5);
-        }
-
-
     }
 
+    private void populateEp(ApexList apexList, JTable table, JTable table2, Matrix matrix, JLabel taktLabel, JLabel picLabel, String pic) {
+        ((DefaultTableModel) table.getModel()).getDataVector().removeAllElements();
+        for (int i = 0; i < apexList.getApexList().size(); i++) {
+            apexList.getApexList().get(i).setK(matrix);
+            ((DefaultTableModel) table.getModel()).insertRow(table.getRowCount(), new Object[]{
+                    Arrays.toString(apexList.getApexList().get(i).getEp()),
+                    apexList.getApexList().get(i).getTakt(),
+                    apexList.getApexList().get(i).getOperation(),
+                    "[" + apexList.getApexList().get(i).getX() + "," + apexList.getApexList().get(i).getY() + "," + apexList.getApexList().get(i).getZ() + "]"
+            });
+            table.setAutoCreateRowSorter(true);
+            double min = apexList.getApexList().get(0).getTakt(), max = apexList.getApexList().get(0).getTakt();
+            for (Apex apex : apexList.getApexList()) {
+                if (min > apex.getTakt()) {
+                    min = apex.getTakt();
+                }
+                if (max < apex.getTakt()) {
+                    max = apex.getTakt();
+                }
+            }
+            taktLabel.setText("F[takty] = Tmax - Tmin + 1 = " + (int)max + " - " + (int)min + " + 1 = " + (int)(max-min+1));
+        }
+
+            table2.setModel(new DefaultTableModel(
+                    new Object[3][3],
+                    new String[3]
+            ));
+            for (int i = 0; i < 3; i++) {
+                for (int j = 0; j < 3; j++) {
+                    table2.setValueAt(matrix.getMatrixData()[i][j], i, j);
+                }
+            }
+
+            picLabel.setIcon(new ImageIcon(this.getClass().getResource(pic)));
+    }
 }
