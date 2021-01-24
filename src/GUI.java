@@ -1,5 +1,3 @@
-import javafx.util.StringConverter;
-
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
@@ -42,6 +40,12 @@ public class GUI extends JFrame {
     private JLabel s1pic;
     private JLabel s2pic;
     private JLabel s3pic;
+    private JLabel s1Mpath;
+    private JLabel s2Mpath;
+    private JLabel s3Mpath;
+    private JLabel s3Time;
+    private JLabel s2Time;
+    private JLabel s1Time;
 
     private AuxiliaryData auxData;
     private int matrixSize;
@@ -125,8 +129,8 @@ public class GUI extends JFrame {
             }
         });
 
-        F1 = new Matrix(3,3,new double[][] {{1, 1, -1}, {-1, 1, -1}, {1, 1, 1}});
-        F2 = new Matrix(3,3,new double[][] {{0, 1, 0}, {-1, 1, -1}, {1, 1, 1}});
+        F1 = new Matrix(2,3,new double[][] {{1, 0, 0}, {0, 1, 3}});
+        F2 = new Matrix(3,3,new double[][] {{1, 0, 1}, {-1, 0, 0}, {1, 1, 1}});
         F3 = new Matrix(3,3,new double[][] {{1, 1, -1}, {-1, 1, -1}, {0, 1, 0}});
 
 
@@ -248,9 +252,9 @@ public class GUI extends JFrame {
         populateTable(auxData.getFullApexList(), auxData.getFullApexNumbers(), allSlotTable);
         auxData.getFullApexList().setConnections();
         populateApexConnections(auxData.getFullApexList(), apexTable);
-        populateEp(auxData.getFullApexList(), s1EpTable, s1Fmatrix, F1, s1takt, s1pic, "structure1.png");
-        populateEp(auxData.getFullApexList(), s2EpTable, s2Fmatrix, F2, s2takt, s2pic, "structure1.png");
-        populateEp(auxData.getFullApexList(), s3EpTable, s3Fmatrix, F3, s3takt, s3pic, "structure1.png");
+        populateEp(auxData.getFullApexList(), s1EpTable, s1Fmatrix, F1, s1takt, s1Mpath, s1Time, s1pic, "structure1D.png");
+        populateEp(auxData.getFullApexList(), s2EpTable, s2Fmatrix, F2, s2takt, s2Mpath, s2Time, s2pic,  "structure2D1.png");
+        populateEp(auxData.getFullApexList(), s3EpTable, s3Fmatrix, F3, s3takt, s3Mpath, s3Time, s3pic,  "structure2D2.jpeg");
 
     }
 
@@ -308,11 +312,12 @@ public class GUI extends JFrame {
         }
     }
 
-    private void populateEp(ApexList apexList, JTable table, JTable table2, Matrix matrix, JLabel taktLabel, JLabel picLabel, String pic) {
+    private void populateEp(ApexList apexList, JTable table, JTable table2, Matrix matrix, JLabel taktLabel, JLabel mpath, JLabel time, JLabel picLabel, String pic) {
         ((DefaultTableModel) table.getModel()).getDataVector().removeAllElements();
+        double min=0, max=0;
         for (int i = 0; i < apexList.getApexList().size(); i++) {
             apexList.getApexList().get(i).setK(matrix);
-            Double[] eps = apexList.getApexList().get(i).getEp();
+            Integer[] eps = apexList.getApexList().get(i).getEp();
             ((DefaultTableModel) table.getModel()).insertRow(table.getRowCount(), new Object[]{
                     eps[0],
                     eps[1],
@@ -320,17 +325,20 @@ public class GUI extends JFrame {
                     apexList.getApexList().get(i).getOperation(),
                     "[" + apexList.getApexList().get(i).getX() + "," + apexList.getApexList().get(i).getY() + "," + apexList.getApexList().get(i).getZ() + "]"
             });
-            TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<DefaultTableModel>((DefaultTableModel) table.getModel());
+
+            TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>((DefaultTableModel) table.getModel());
             table.setRowSorter(sorter);
-
-            List<RowSorter.SortKey> sortKeys = new ArrayList<>(25);
-            sortKeys.add(new RowSorter.SortKey(1, SortOrder.ASCENDING));
+            List<RowSorter.SortKey> sortKeys = new ArrayList<>();
             sortKeys.add(new RowSorter.SortKey(0, SortOrder.ASCENDING));
+            sortKeys.add(new RowSorter.SortKey(1, SortOrder.ASCENDING));
             sorter.setSortKeys(sortKeys);
+            sorter.sort();
+            table.getTableHeader().setEnabled(false);
 
 
 
-            double min = apexList.getApexList().get(0).getTakt(), max = apexList.getApexList().get(0).getTakt();
+            min = apexList.getApexList().get(0).getTakt();
+            max = apexList.getApexList().get(0).getTakt();
             for (Apex apex : apexList.getApexList()) {
                 if (min > apex.getTakt()) {
                     min = apex.getTakt();
@@ -339,19 +347,41 @@ public class GUI extends JFrame {
                     max = apex.getTakt();
                 }
             }
-            taktLabel.setText("F[takty] = Tmax - Tmin + 1 = " + (int)max + " - " + (int)min + " + 1 = " + (int)(max-min+1));
+
+
+
+
         }
+        taktLabel.setText("F[takty] = Tmax - Tmin + 1 = " + (int)max + " - " + (int)min + " + 1 = " + (int)(max-min+1));
+        if (matrix == F1) {
+            mpath.setText("Mpath = N = " + this.matrix.getRow());
+            double value = ((max-min+1)+(24*this.matrix.getRow()))/354000000;
+            System.out.println(value);
+            time.setText( "T[s]=(Takt+MPlatency)/Fmax = " + (((max-min+1)+(24*this.matrix.getRow()))/354000000) + "[s]");
+            //time.setText(""+(8+(24*this.matrix.getRow())/354));
+
+        } else {
+            mpath.setText("Mpath = 2N - 1 = " + (-1+2*this.matrix.getRow()));
+            double value = ((max-min+1)+(24*(-1+2*this.matrix.getRow())))/354000000;
+            System.out.println(value);
+            time.setText( "T[s]=(Takt+MPlatency)/Fmax = " + (((max-min+1)+(24*(-1+2*this.matrix.getRow())))/354000000)+ "[s]");
+            //time.setText( ""+(8+(24*(-1+2*this.matrix.getRow()))/354000000));
+        }
+
 
             table2.setModel(new DefaultTableModel(
                     new Object[3][3],
                     new String[3]
             ));
-            for (int i = 0; i < 3; i++) {
-                for (int j = 0; j < 3; j++) {
+
+            for (int i = 0; i < matrix.getRow(); i++) {
+                for (int j = 0; j < matrix.getColumn(); j++) {
                     table2.setValueAt(matrix.getMatrixData()[i][j], i, j);
                 }
             }
 
             picLabel.setIcon(new ImageIcon(this.getClass().getResource(pic)));
     }
+
+
 }

@@ -10,8 +10,8 @@ public class Apex {
     private Integer[] ia;
     private Integer[] ia2;
     private Integer[] ia3;
-    private Double[] ep;
-    private double takt;
+    private Integer[] ep;
+    private int takt;
     private final ArrayList<Apex> connections;
 
     public Apex(int x, int y, int z) {
@@ -22,18 +22,22 @@ public class Apex {
         this.connections = new ArrayList<>();
     }
 
-    public Double[] getEp() {
+    public Integer[] getEp() {
         return ep;
     }
 
     public void setK(Matrix A) {
         Matrix data = A.multiply(new Matrix(3, 1, new double[][]{{this.getX()}, {this.getY()}, {this.getZ()}}));
-        this.ep = new Double[] {data.getMatrixData(0,0), data.getMatrixData(1,0)};
-        this.takt = data.getMatrixData(2,0);
+        if(A.getRow()==2) {
+            this.ep = new Integer[]{(int) data.getMatrixData(0, 0), (int) data.getMatrixData(0, 0)};
+        } else {
+            this.ep = new Integer[]{(int) data.getMatrixData(0, 0), (int) data.getMatrixData(1, 0)};
+        }
+        this.takt = (int)data.getMatrixData(data.getMatrixData().length-1,0);
 
     }
 
-    public double getTakt() {
+    public int getTakt() {
         return takt;
     }
 

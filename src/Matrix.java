@@ -1,7 +1,15 @@
-import java.util.Arrays;
+
 
 public class Matrix {
-  
+
+    public int getRow() {
+        return row;
+    }
+
+    public int getColumn() {
+        return column;
+    }
+
     private final int row;
     private final int column;
     private final double[][] matrixData;
